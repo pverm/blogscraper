@@ -1,11 +1,11 @@
 import os
 import configparser
-import sys
 from requests.exceptions import RequestException
 from datetime import datetime
 from bs4 import BeautifulSoup
 from general import browser_get, get_md5_hash, valid_name
 from imgurpython import ImgurClient
+from imgurpython.helpers.error import ImgurClientRateLimitError
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -108,7 +108,7 @@ class Blogentry:
         }
         try:
             self.album_id = client.create_album(fields)['id']
-        except imgurpython.helpers.error.ImgurClientRateLimitError as e:
+        except ImgurClientRateLimitError as e:
             print('Unable to upload images: imgur API rate limit exceeded.')
-            sys.exit(1)
+            os._exit(1)
         print("Created imgur album '{0}' at http://imgur.com/a/{1}".format(self.album_title, self.album_id))
