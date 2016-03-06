@@ -1,5 +1,6 @@
 import os
 import configparser
+import sys
 from requests.exceptions import RequestException
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -105,5 +106,9 @@ class Blogentry:
             'layout': 'horizontal',     # blog, grid, horizontal, vertical
             'privacy': 'public'         # public, hidden, secret
         }
-        self.album_id = client.create_album(fields)['id']
+        try:
+            self.album_id = client.create_album(fields)['id']
+        except imgurpython.helpers.error.ImgurClientRateLimitError as e:
+            print('Unable to upload images: imgur API rate limit exceeded.')
+            sys.exit(1)
         print("Created imgur album '{0}' at http://imgur.com/a/{1}".format(self.album_title, self.album_id))
