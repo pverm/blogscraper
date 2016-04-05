@@ -18,9 +18,16 @@ def older_than_14_days(datestring):
     return datetime.now() - timedelta(days=14) > d
 
 
-def valid_name(filename):
-    # remove any invalid characters from folder/file name
-    return re.sub(r'[/\\:*?"<>|]', '', filename)
+def valid_name(name):
+    """
+    remove any invalid characters from folder/file name and cut to max 200 bytes
+
+    :param name: folder or filename
+    """
+    stripped = re.sub(r'[/\\:*?"<>|]', '', name.strip())
+    while len(stripped.encode('utf-8')) > 200:
+        stripped = stripped[:-1]
+    return stripped
 
 
 def get_md5_hash(data):

@@ -5,17 +5,14 @@ import xml.etree.ElementTree as ElementTree
 from requests.exceptions import RequestException
 from general import browser_get
 
-config = configparser.ConfigParser()
-config.read('config.ini')
 
-
-def get_current_feed():
+def get_feed(url):
     try:
-        logging.info("Getting feed of recent blog entries")
-        r = browser_get(config['DEFAULT']['feed_url'])
+        logging.info("Getting feed {}".format(url))
+        r = browser_get(url)
         return r.content.decode('utf-8')
     except RequestException as e:
-        logging.error("Could not connect to {0}: {1}".format(config['DEFAULT']['feed_url'], e))
+        logging.error("Could not connect to {0}: {1}".format(url, e))
         sys.exit(1)
 
 
