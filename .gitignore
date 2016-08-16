@@ -3,4 +3,4 @@ __pycache__
 config.ini
 blog.p
 images
-nogibot.log
+nogibot.log*

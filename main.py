@@ -24,7 +24,7 @@ def worker():
 if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read('config.ini')
-    logging.basicConfig(handlers=[logging.FileHandler(config['DEFAULT']['log_file'], 'w', 'utf-8')],
+    logging.basicConfig(handlers=[logging.FileHandler(config['DEFAULT']['log_file'], 'a', 'utf-8')],
                         format='%(asctime)s [%(levelname)s] %(message)s',
                         level=logging.INFO)
 

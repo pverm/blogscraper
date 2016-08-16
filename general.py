@@ -27,6 +27,8 @@ def valid_name(name):
     stripped = re.sub(r'[/\\:*?"<>|]', '', name.strip())
     while len(stripped.encode('utf-8')) > 200:
         stripped = stripped[:-1]
+    stripped = stripped.rstrip('.')  # remove dots at end of name
+    stripped = stripped.rstrip(' ')  # remove blank space at end of name
     return stripped
 
 

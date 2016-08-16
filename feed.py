@@ -10,6 +10,9 @@ def get_feed(url):
     try:
         logging.info("Getting feed {}".format(url))
         r = browser_get(url)
+        if r.status_code == 404:
+            logging.error("Feed {0} not found".format(url))
+            return False
         return r.content.decode('utf-8')
     except RequestException as e:
         logging.error("Could not connect to {0}: {1}".format(url, e))
@@ -17,6 +20,10 @@ def get_feed(url):
 
 
 def parse_feed(raw_data):
+    # couldn't get feed data
+    if not raw_data:
+        return []
+
     namespace = {'atom': 'http://www.w3.org/2005/Atom'}
     root = ElementTree.fromstring(raw_data)
     entries = []
