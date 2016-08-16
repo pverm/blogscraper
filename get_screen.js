@@ -1,0 +1,49 @@
+var webshot = require('webshot');
+var fs = require('fs');
+
+var options = {
+  windowSize: {
+    width: 1920,
+    height: 1080
+  },
+  shotSize: {
+    width: 'all',
+    height: 'all'
+  },
+  captureSelector: '.left1',
+  customCSS: '#comments { display: none; }',
+};
+
+var optionsSmph = {
+    windowSize: {
+      width: 360,
+      height: 640
+    },
+    shotSize: {
+      width: 'all',
+      height: 'all'
+    },
+    captureSelector: '.unit',
+    streamType: 'png'
+};
+
+var renderStream = webshot(smph(process.argv[2]), optionsSmph);
+renderStream.on('data', function(data) {
+  process.stdout.write(data.toString('binary'), 'binary');
+});
+
+
+
+/*
+webshot(smph(process.argv[2]), process.argv[3], optionsSmph, function(err) {
+  if (err) return console.log(err);
+  console.log('Captured screenshot!');
+});
+
+
+var renderStream = webshot(smph(url), optionsSmph);
+var file = fs.createWriteStream(process.argv[3], {encoding: 'binary'});
+renderStream.on('data', function(data) {
+  file.write(data.toString('binary'), 'binary');
+});
+*/

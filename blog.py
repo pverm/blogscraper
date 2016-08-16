@@ -1,6 +1,7 @@
 import os
 import configparser
 import logging
+import subprocess
 from requests.exceptions import RequestException
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -42,6 +43,7 @@ class Blogentry:
             os.makedirs(self.dirpath, exist_ok=True)
             self.download_images()
             self.download_images_awalker()
+            self.save_screenshot()
         self.downloaded = True
 
     def download_images(self):
@@ -92,6 +94,24 @@ class Blogentry:
         # images hosted on awalker.jp
         urls = [x['href'] for x in soup.select('.entrybody div a') if 'dcimg.awalker.jp' in x['href']]
         self.images_awalker.extend(set(urls))
+        
+    def save_screenshot(self):
+        filepath = os.path.join(self.dirpath, 'screenshot.png')
+        screenshot = open(filepath, 'wb')
+        returncode = subprocess.call(["node", "get_screen.js", self.smph(self.url)], stdout=screenshot)
+        screenshot.close()
+        # without stream
+        # subprocess.call(["node", "get_screen.js", self.url, self.filepath])
+        if returncode == 0:
+            logging.info("Saved screenshot of {}".format(self.url))
+        else:
+            logging.error("Couldn't save screenshot of {}".format(self.url))
+            
+    def smph(self):
+        # get mobile version of site
+        spliturl = self.url.split('/')
+        spliturl.insert(4, 'smph')
+        return '/'.join(spliturl)
 
     def upload(self):
         self.create_album()
