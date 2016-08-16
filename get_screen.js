@@ -20,18 +20,18 @@ var options = {
 };
 
 var optionsSmph = {
-    windowSize: {
-      width: 360,
-      height: 640
-    },
-    shotSize: {
-      width: 'all',
-      height: 'all'
-    },
-    captureSelector: '.unit',
-    streamType: 'png',
-    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X)'
-      + ' AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3'
+  windowSize: {
+    width: 360,
+    height: 640
+  },
+  shotSize: {
+    width: 'all',
+    height: 'all'
+  },
+  captureSelector: '.unit',
+  streamType: 'png',
+  userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X)'
+    + ' AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3'
 };
 
 var renderStream = webshot(process.argv[2], optionsSmph);

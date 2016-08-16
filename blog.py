@@ -97,18 +97,16 @@ class Blogentry:
         
     def save_screenshot(self):
         try:
-            returncode = subprocess(["node", "-v"])
+            subprocess.call(["node", "-v"], stdout=subprocess.DEVNULL)
         except FileNotFoundError:
             logging.error("Node not installed! Can't run get_screen.js script")
             return
         filepath = os.path.join(self.dirpath, 'screenshot.png')
         screenshot = open(filepath, 'wb')
-        returncode = subprocess.call(['node', 'get_screen.js', self.smph(self.url)], stdout=screenshot)
+        returncode = subprocess.call(['node', 'get_screen.js', self.smph()], stdout=screenshot)
         screenshot.close()
-        # without stream
-        # subprocess.call(["node", "get_screen.js", self.url, self.filepath])
         if returncode == 0:
-            logging.info("Saved screenshot of {}".format(self.url))
+            logging.info("Saved screenshot at {}".format(filepath))
         elif returncode == 2:
             logging.error("Node module 'webshot' not installed! Can't run get_screen.js script")
         else:
