@@ -96,14 +96,21 @@ class Blogentry:
         self.images_awalker.extend(set(urls))
         
     def save_screenshot(self):
+        try:
+            returncode = subprocess(["node", "-v"])
+        except FileNotFoundError:
+            logging.error("Node not installed! Can't run get_screen.js script")
+            return
         filepath = os.path.join(self.dirpath, 'screenshot.png')
         screenshot = open(filepath, 'wb')
-        returncode = subprocess.call(["node", "get_screen.js", self.smph(self.url)], stdout=screenshot)
+        returncode = subprocess.call(['node', 'get_screen.js', self.smph(self.url)], stdout=screenshot)
         screenshot.close()
         # without stream
         # subprocess.call(["node", "get_screen.js", self.url, self.filepath])
         if returncode == 0:
             logging.info("Saved screenshot of {}".format(self.url))
+        elif returncode == 2:
+            logging.error("Node module 'webshot' not installed! Can't run get_screen.js script")
         else:
             logging.error("Couldn't save screenshot of {}".format(self.url))
             
