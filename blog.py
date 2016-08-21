@@ -96,14 +96,15 @@ class Blogentry:
         self.images_awalker.extend(set(urls))
         
     def save_screenshot(self):
+        CREATE_NO_WINDOW = 0x08000000
         try:
-            subprocess.call(["node", "-v"], stdout=subprocess.DEVNULL)
+            subprocess.call(["node", "-v"], stdout=subprocess.DEVNULL, creationflags=CREATE_NO_WINDOW)
         except FileNotFoundError:
             logging.error("Node not installed! Can't run get_screen.js script")
             return
         filepath = os.path.join(self.dirpath, 'screenshot.png')
         screenshot = open(filepath, 'wb')
-        returncode = subprocess.call(['node', 'get_screen.js', self.smph()], stdout=screenshot)
+        returncode = subprocess.call(['node', 'get_screen.js', self.smph()], stdout=screenshot, creationflags=CREATE_NO_WINDOW)
         screenshot.close()
         if returncode == 0:
             logging.info("Saved screenshot at {}".format(filepath))
