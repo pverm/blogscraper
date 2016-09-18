@@ -92,7 +92,9 @@ class Blogentry:
         self.images.extend(set(images))
 
         # images hosted on awalker.jp
-        urls = [x['href'] for x in soup.select('.entrybody div a') if 'dcimg.awalker.jp' in x['href']]
+        a_tags = soup.select('.entrybody div a')
+        filtered_a_tags = [x for x in a_tags if 'href' in x.attrs]
+        urls = [x['href'] for x in filtered_a_tags if 'dcimg.awalker.jp' in x['href']]
         self.images_awalker.extend(set(urls))
         
     def save_screenshot(self):
